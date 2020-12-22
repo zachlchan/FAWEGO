@@ -1,17 +1,12 @@
 import React, { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const RecordButton = () => {
-  const [isRecording, setIsRecording] = useState(false);
-
+const RecordButton = ({ isRecording, press }) => {
   return (
     <TouchableOpacity
-      onPress={() => {
-        //alert('Recording');
-        setIsRecording(!isRecording);
-      }}
+      onPress={press}
       style={styles.button}>
-      <View style={isRecording ? styles.buttonSquare : styles.buttonCircle }></View>
+      <View style={ isRecording ? styles.buttonSquare : styles.buttonCircle }></View>
     </TouchableOpacity>
   );
 }
