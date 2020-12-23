@@ -12,11 +12,31 @@ class App extends Component {
       isRecording: false,
       time: 0,
       startTime: 0,
+      location: {},
     };
+    this.findCoordinates = this.findCoordinates.bind(this);
     this.startTimer = this.startTimer.bind(this);
     this.stopTimer = this.stopTimer.bind(this);
     this.toggleRecording = this.toggleRecording.bind(this);
   }
+
+  componentDidMount() {
+    this.findCoordinates();
+  }
+
+  findCoordinates = () => {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        // const location = JSON.stringify(position);
+        const location = position;
+
+        this.setState({ location });
+        console.log('current location', location);
+      },
+      error => Alert.alert(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  };
 
   startTimer = () => {
     this.setState({
@@ -43,7 +63,7 @@ class App extends Component {
   }
 
   render() {
-    const { isRecording, time } = this.state;
+    const { isRecording, time, location } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.headerContainer}>
@@ -53,7 +73,7 @@ class App extends Component {
           <Timer isStarted={isRecording} time={time} />
         </View>
         <View style={styles.gpsContainer}>
-          <GPS_Track isRecording={isRecording} />
+          <GPS_Track isRecording={isRecording} location={location}/>
         </View>
         <View style={styles.buttonContainer}>
           <RecordButton isRecording={isRecording} press={this.toggleRecording} />

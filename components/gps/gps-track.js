@@ -21,10 +21,17 @@ const color = 'FILL_ME_IN';
 
 // if recording, return current location on map
 // if stopped recording, display tracks
-const GPS_Track = ({ isRecording }) => {
+const GPS_Track = ({ isRecording, location }) => {
+  const latitude = location.coords.latitude;
+  const longitude = location.coords.longitude;
 
   return (
-    <MapView style={StyleSheet.absoluteFillObject} />
+    <MapView style={StyleSheet.absoluteFillObject} region={{
+      latitude: latitude,
+      longitude: longitude,
+      latitudeDelta: 0.015, // need to research
+      longitudeDelta: 0.0121, // need to research
+    }} showsUserLocation={true} />
   );
 }
 
