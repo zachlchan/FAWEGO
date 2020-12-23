@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import RecordButton from './components/record-button';
+import Header from './components/header';
 import Timer from './components/timer';
+import GPS_Track from './components/gps/gps-track';
+import RecordButton from './components/record-button';
 
 class App extends Component {
   constructor(props) {
@@ -44,12 +46,16 @@ class App extends Component {
     const { isRecording, time } = this.state;
     return (
       <View style={styles.container}>
-        <View style={{ flex: 1 }}>
+        <View style={styles.headerContainer}>
+          <Header />
         </View>
         <View style={styles.timerContainer}>
           <Timer isStarted={isRecording} time={time} />
         </View>
-        <View style={{ flex: 1 }}>
+        <View style={styles.gpsContainer}>
+          <GPS_Track isRecording={isRecording} />
+        </View>
+        <View style={styles.buttonContainer}>
           <RecordButton isRecording={isRecording} press={this.toggleRecording} />
         </View>
       </View>
@@ -64,11 +70,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  headerContainer: {
+    flex: 0.5,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    marginBottom: 20,
+  },
   timerContainer: {
-    flex: 1,
+    flex: 0.7,
     flexDirection: 'column',
+  },
+  gpsContainer: {
+    flex: 1.2,
+    height: 400,
+    width: 400,
+    justifyContent: 'flex-end',
     alignItems: 'center',
   },
+  buttonContainer: {
+    flex: 1,
+  }
 });
 
 export default App;

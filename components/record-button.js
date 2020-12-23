@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderStyle: 'solid',
     borderWidth: 5,
-    borderColor: '#eb4634',
+    borderColor: '#DC3725',
+    opacity: 0.8,
     height: 110,
     width: 110,
     padding: 20,
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0.5 },
   },
   buttonSquare: {
-    backgroundColor: '#eb4634',
+    backgroundColor: '#DC3725',
     width: 40,
     height: 40,
     borderRadius: 5,
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0.5 },
   },
   buttonCircle: {
-    backgroundColor: '#eb4634',
+    backgroundColor: '#DC3725',
     width: 90,
     height: 90,
     borderRadius: 90,
