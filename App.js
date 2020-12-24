@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from './components/header';
 import Timer from './components/timer';
@@ -12,7 +12,10 @@ class App extends Component {
       isRecording: false,
       time: 0,
       startTime: 0,
-      location: {},
+      location: { coords: {
+        latitude: 0,
+        longitude: 0,
+      }},
     };
     this.findCoordinates = this.findCoordinates.bind(this);
     this.startTimer = this.startTimer.bind(this);
@@ -24,14 +27,10 @@ class App extends Component {
     this.findCoordinates();
   }
 
-  findCoordinates = () => {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        // const location = JSON.stringify(position);
-        const location = position;
-
+  findCoordinates = async () => {
+    await navigator.geolocation.getCurrentPosition(
+      location => {
         this.setState({ location });
-        console.log('current location', location);
       },
       error => Alert.alert(error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
