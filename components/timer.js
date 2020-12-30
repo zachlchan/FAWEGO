@@ -1,13 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ms from 'pretty-ms';
 
-const Timer = ({ isStarted, time }) => {
+const Timer = ({ isStarted }) => {
+  const [time, setTime] = useState(0);
+  const [startTime, setStartTime] = useState(0);
+
+  useEffect(() => {
+    let duration = null;
+    if (isStarted) {
+      setStartTime(Date.now());
+      duration = setInterval(() => {
+        setTime(Math.floor((Date.now() - startTime) / 1000) * 1000);
+      }, 1000);
+    } else {
+      setTime(0);
+      clearInterval(duration);
+    }
+    return () => {
+      clearInterval(duration);
+    }
+  }, [isStarted, startTime]);
+
   const instructions = isStarted ? `Activity started:\n` : `To begin recording,\n press the button below`;
 
-  // const timerText = isStarted ? ms(time, {colonNotation: true }) : '';
-
-  const timerText = ms(time, {colonNotation: true });
+  const timerText = ms(time, { colonNotation: true });
 
   return (
     <>
