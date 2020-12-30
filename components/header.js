@@ -1,11 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 
 const Header = () => {
   return (
-    <Text style={styles.header}>
-      FRAVA
-    </Text>
+    <>
+      <Text style={styles.header}>
+        FRAVA
+      </Text>
+      <StatusBar style="auto" />
+    </>
   );
 }
 

@@ -17,7 +17,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app requires background geolocation tracking",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "This app requiers background geolocation tracking"
+      }
     },
     "android": {
       "adaptiveIcon": {
