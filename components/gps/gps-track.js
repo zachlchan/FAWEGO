@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
-import MapView, {AnimatedRegion} from 'react-native-maps';
+import MapView, {Polyline} from 'react-native-maps';
 // import * as Location from 'expo-location';
 // import * as Permissions from 'expo-permissions';
 //import * as TaskManager from 'expo-task-manager';
@@ -14,6 +14,7 @@ const longitude_delta = latitude_delta * aspect_ratio;
 
 const GPS_Track = ({ isRecording }) => {
   const [location, setLocation] = useState(null); // {latitude, longitude}
+  const [coordinates, setCoordinates] = useState(null);
   const [isTracking, setIsTracking] = useState(false);
   const [watchID, setWatchID] = useState(null);
 
@@ -41,6 +42,11 @@ const GPS_Track = ({ isRecording }) => {
     let id = navigator.geolocation.watchPosition((position) => {
       let {latitude, longitude} = position.coords;
       setLocation({latitude, longitude});
+      if(!coordinates){
+        setCoordinates([{latitude, longitude}]);
+      } else {
+        setCoordinates(oldCoords => ([...oldCoords, {latitude, longitude}]));
+      }
     }, {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000});
     setWatchID(id);
   }
@@ -52,15 +58,17 @@ const GPS_Track = ({ isRecording }) => {
     return (
       <>
         <MapView style={styles.map}
-        region={{
-          latitude: latitude,
-          longitude: longitude,
-          latitudeDelta: latitude_delta, // need to research
-          longitudeDelta: longitude_delta, // need to research
-        }}
-        showsUserLocation={true}
-        followUserLocation={true}
-         />
+          region={{
+            latitude: latitude,
+            longitude: longitude,
+            latitudeDelta: latitude_delta, // need to research
+            longitudeDelta: longitude_delta, // need to research
+          }}
+          showsUserLocation={true}
+          followUserLocation={true}
+        >
+          <Polyline coordinates={coordinates} strokeWidth={5} />
+        </MapView>
         <Text style={styles.coords}>{coordstext}</Text>
       </>
     );
