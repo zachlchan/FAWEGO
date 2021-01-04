@@ -20,7 +20,9 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "This app requires background geolocation tracking",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "This app requiers background geolocation tracking"
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "This app requiers background geolocation tracking",
+        "NSLocationAlwaysUsageDescription": "This app requiers background geolocation tracking",
+        "UIBackgroundModes": [ "location" ]
       }
     },
     "android": {

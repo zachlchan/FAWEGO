@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import MapView, {Polyline} from 'react-native-maps';
-// import * as Location from 'expo-location';
-// import * as Permissions from 'expo-permissions';
 //import * as TaskManager from 'expo-task-manager';
 
 const { width } = Dimensions.get('window');
@@ -54,7 +52,6 @@ const GPS_Track = ({ isRecording }) => {
   let text = 'Acquiring gps signal...';
   if (location) {
     const { latitude, longitude } = location;
-    let coordstext = `latitude: ${latitude} \n longitude: ${longitude} \n tracking: ${isTracking}`
     return (
       <>
         <MapView style={styles.map}
@@ -69,7 +66,6 @@ const GPS_Track = ({ isRecording }) => {
         >
           <Polyline coordinates={coordinates} strokeWidth={5} />
         </MapView>
-        <Text style={styles.coords}>{coordstext}</Text>
       </>
     );
   } else {
@@ -81,9 +77,9 @@ const GPS_Track = ({ isRecording }) => {
 
 const styles = StyleSheet.create({
   map: {
-    //...StyleSheet.absoluteFillObject,
-    width: width,
-    height: height
+    ...StyleSheet.absoluteFillObject,
+    // width: width,
+    // height: height
   },
   coords: {
     flex: 1
