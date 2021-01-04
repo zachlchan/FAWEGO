@@ -1,72 +1,85 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
-import MapView from 'react-native-maps';
-import * as Location from 'expo-location';
+import MapView, {AnimatedRegion} from 'react-native-maps';
+// import * as Location from 'expo-location';
+// import * as Permissions from 'expo-permissions';
+//import * as TaskManager from 'expo-task-manager';
 
-// The following are the informational fields which are typically only recognized in the first row of a track's data:
-// name, desc, width, color, opacity, fill_color, fill_opacity.
-
-// write data to current activity data map
-// trackpoint,time,latitude,longitude,alt,speed,course,name (track,T or Waypoint,W),color
-
-const trackpoint = 'FILL_ME_IN';
-const time = 'FILL_ME_IN';
-const latitude = 'FILL_ME_IN';
-const longitude = 'FILL_ME_IN';
-const alt = 'FILL_ME_IN';
-const speed = 'FILL_ME_IN';
-const course = 'FILL_ME_IN';
-const name = 'FILL_ME_IN';
-const color = 'FILL_ME_IN';
+const { width } = Dimensions.get('window');
+const height = 200;
+const aspect_ratio = width / height;
+const latitude_delta = 0.005;
+const longitude_delta = latitude_delta * aspect_ratio;
 
 
-// if recording, return current location on map
-// if stopped recording, display tracks
 const GPS_Track = ({ isRecording }) => {
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsb] = useState(null);
-
+  const [location, setLocation] = useState(null); // {latitude, longitude}
+  const [isTracking, setIsTracking] = useState(false);
+  const [watchID, setWatchID] = useState(null);
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
-      }
-      let currentLocation = await Location.getCurrentPositionAsync({});
-      setLocation(currentLocation);
-    })();
-  }, []);
+    if(!isRecording && !isTracking) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const {latitude, longitude} = position.coords;
+          setLocation({latitude, longitude});
+        },
+        (error) => alert(error.message),
+        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+      );
+    } else if(isRecording) {
+      setIsTracking(true);
+      trackLocation();
+    } else if(!isRecording && isTracking) {
+      setIsTracking(false);
+      navigator.geolocation.clearWatch(watchID);
+      setWatchID(null);
+    }
+  }, [isRecording]);
+
+  const trackLocation = () => {
+    let id = navigator.geolocation.watchPosition((position) => {
+      let {latitude, longitude} = position.coords;
+      setLocation({latitude, longitude});
+    }, {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000});
+    setWatchID(id);
+  }
 
   let text = 'Acquiring gps signal...';
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    const latitude = location.coords.latitude;
-    const longitude = location.coords.longitude;
+  if (location) {
+    const { latitude, longitude } = location;
+    let coordstext = `latitude: ${latitude} \n longitude: ${longitude} \n tracking: ${isTracking}`
     return (
-      <MapView style={styles.map}
+      <>
+        <MapView style={styles.map}
         region={{
           latitude: latitude,
           longitude: longitude,
-          latitudeDelta: 0.015, // need to research
-          longitudeDelta: 0.0121, // need to research
+          latitudeDelta: latitude_delta, // need to research
+          longitudeDelta: longitude_delta, // need to research
         }}
-        showsUserLocation={true} />
+        showsUserLocation={true}
+        followUserLocation={true}
+         />
+        <Text style={styles.coords}>{coordstext}</Text>
+      </>
     );
   } else {
     return (
       <Text>{text}</Text>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
   map: {
-    ...StyleSheet.absoluteFillObject,
+    //...StyleSheet.absoluteFillObject,
+    width: width,
+    height: height
   },
+  coords: {
+    flex: 1
+  }
 });
 
 export default GPS_Track;
-
