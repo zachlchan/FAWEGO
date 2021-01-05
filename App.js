@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from './components/header';
 import Timer from './components/timer';
 import GPS_Track from './components/gps/gps-track';
@@ -21,18 +21,18 @@ const App = () => {
         <GPS_Track isRecording={isRecording} />
       </View>
       <View style={styles.buttonContainer}>
-        <RecordButton isRecording={isRecording} press={()=>setIsRecording(!isRecording)} />
+        <RecordButton isRecording={isRecording} toggleRecording={()=>setIsRecording(!isRecording)} />
       </View>
     </View>
   );
 }
 
+const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
   },
   headerContainer: {
     flex: 0.5,
@@ -42,16 +42,14 @@ const styles = StyleSheet.create({
   },
   timerContainer: {
     flex: 0.6,
-    flexDirection: 'column',
   },
   gpsContainer: {
-    flex: 1,
-    width: 400,
-    justifyContent: 'flex-end',
+    flex: 1.4,
+    width: width,
     alignItems: 'center',
   },
   buttonContainer: {
-    flex: 1,
+    flex: 0.7,
   }
 });
 

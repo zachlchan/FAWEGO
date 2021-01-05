@@ -33,6 +33,7 @@ const GPS_Track = ({ isRecording }) => {
       setIsTracking(false);
       navigator.geolocation.clearWatch(watchID);
       setWatchID(null);
+      setCoordinates(null);
     }
   }, [isRecording]);
 
