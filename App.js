@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from './components/header';
+import Metrics from './components/metrics';
 import Timer from './components/timer';
 import GPS_Track from './components/gps/gps-track';
 import RecordButton from './components/record-button';
@@ -8,6 +9,7 @@ import RecordButton from './components/record-button';
 const App = () => {
 
   const [isRecording, setIsRecording] = useState(false);
+  const [distance, setDistance] = useState(0);
 
   return (
     <View style={styles.container}>
@@ -15,10 +17,10 @@ const App = () => {
         <Header />
       </View>
       <View style={styles.timerContainer}>
-        <Timer isStarted={isRecording} />
+        <Metrics isStarted={isRecording} totalDist={distance}/>
       </View>
       <View style={styles.gpsContainer}>
-        <GPS_Track isRecording={isRecording} />
+        <GPS_Track isRecording={isRecording} updateDistance={setDistance} />
       </View>
       <View style={styles.buttonContainer}>
         <RecordButton isRecording={isRecording} toggleRecording={()=>setIsRecording(!isRecording)} />

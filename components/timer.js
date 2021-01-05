@@ -22,15 +22,10 @@ const Timer = ({ isStarted }) => {
     }
   }, [isStarted, startTime]);
 
-  const instructions = isStarted ? `Activity started:\n` : `To begin recording,\n press the button below`;
-
   const timerText = ms(time, { colonNotation: true });
 
   return (
     <>
-      <Text style={styles.instructions}>
-        {instructions}
-      </Text>
       <Text style={isStarted ? styles.timerStart : styles.timerStop}>
         {timerText}
       </Text>
@@ -48,14 +43,14 @@ const styles = StyleSheet.create({
   timerStart: {
     color: '#DC3725',
     opacity: 0.8,
-    fontSize: 80,
+    fontSize: 60,
     marginHorizontal: 15,
     textAlign: 'center',
   },
   timerStop: {
     color: '#1F1F1F',
     opacity: 0.8,
-    fontSize: 80,
+    fontSize: 60,
     marginHorizontal: 15,
     textAlign: 'center',
   },

@@ -5,6 +5,7 @@ import ResumeButton from './resume-button.js';
 
 const RecordButton = ({ isRecording, toggleRecording }) => {
   const [isResumed, setIsResumed] = useState(true);
+  const [isFinished, setIsFinished] = useState(false);
 
   if (!isRecording) {
     return (
