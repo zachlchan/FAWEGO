@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import MapView, {Polyline} from 'react-native-maps';
 //import * as TaskManager from 'expo-task-manager';
@@ -8,7 +8,6 @@ const height = 200;
 const aspect_ratio = width / height;
 const latitude_delta = 0.005;
 const longitude_delta = latitude_delta * aspect_ratio;
-
 
 const GPS_Track = ({ isRecording }) => {
   const [location, setLocation] = useState(null); // {latitude, longitude}
@@ -22,6 +21,7 @@ const GPS_Track = ({ isRecording }) => {
         (position) => {
           const {latitude, longitude} = position.coords;
           setLocation({latitude, longitude});
+          setCoordinates([{latitude, longitude}]);
         },
         (error) => alert(error.message),
         {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
@@ -40,11 +40,7 @@ const GPS_Track = ({ isRecording }) => {
     let id = navigator.geolocation.watchPosition((position) => {
       let {latitude, longitude} = position.coords;
       setLocation({latitude, longitude});
-      if(!coordinates){
-        setCoordinates([{latitude, longitude}]);
-      } else {
-        setCoordinates(oldCoords => ([...oldCoords, {latitude, longitude}]));
-      }
+      setCoordinates(oldCoords => ([...oldCoords, {latitude, longitude}]));
     }, {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000});
     setWatchID(id);
   }
