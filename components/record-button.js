@@ -4,34 +4,33 @@ import FinishButton from './finish-button';
 import ResumeButton from './resume-button.js';
 
 const RecordButton = ({ isRecording, toggleRecording }) => {
-  const [isResumed, setIsResumed] = useState(true);
-  const [isFinished, setIsFinished] = useState(false);
+  const [isStopped, setIsStopped] = useState(true);
 
   if (!isRecording) {
     return (
       <TouchableOpacity
         onPress={toggleRecording}
         style={styles.startButton}>
-        <View style={ isRecording ? styles.buttonSquare : styles.buttonCircle }>
-          <Text style={styles.buttonText}>{ !isRecording ? 'START' : 'STOP' }</Text>
+        <View style={styles.buttonCircle}>
+          <Text style={styles.buttonText}>START</Text>
         </View>
       </TouchableOpacity>
     );
-  } else if (isRecording && isResumed) {
+  } else if (isRecording && isStopped) {
     return (
       <TouchableOpacity
-        onPress={()=>setIsResumed(false)}
+        onPress={()=>setIsStopped(false)}
         style={styles.stopButton}>
-        <View style={ isRecording ? styles.buttonSquare : styles.buttonCircle }>
-          <Text style={styles.buttonText}>{ !isRecording ? 'START' : 'STOP' }</Text>
+        <View style={styles.buttonSquare}>
+          <Text style={styles.buttonText}>STOP</Text>
         </View>
       </TouchableOpacity>
     )
-  } else if (isRecording && !isResumed) {
+  } else if (isRecording && !isStopped) {
     return (
       <View style={styles.RF_ButtonContainer}>
-        <ResumeButton press={()=>setIsResumed(true)}/>
-        <FinishButton press={toggleRecording}/>
+        <ResumeButton press={()=>setIsStopped(true)}/>
+        <FinishButton press={()=>{toggleRecording(); setIsStopped(true)}}/>
       </View>
     )
   }
